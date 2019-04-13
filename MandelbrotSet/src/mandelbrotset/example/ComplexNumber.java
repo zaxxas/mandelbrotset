@@ -5,7 +5,13 @@ package mandelbrotset.example;
  */
 public class ComplexNumber {
 	
+        /**
+         * 実数部
+         */
 	double re = 0;
+        /**
+         * 虚数部
+         */
 	double im = 0;
 	
 	public ComplexNumber(double re, double im){
