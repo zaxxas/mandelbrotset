@@ -1,5 +1,8 @@
 package mandelbrotset.example;
 
+/**
+ *  複素数用クラスa/**
+ */
 public class ComplexNumber {
 	
 	double re = 0;
