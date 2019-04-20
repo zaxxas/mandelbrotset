@@ -1,0 +1,15 @@
+version: 2 
+jobs:       
+  build:
+    docker:
+      - image: iganarix/base-alpine
+    steps:
+      - checkout
+      - run:
+          name: Hello World TEST
+          command: "echo 'Hello World !!!'"
+workflows:
+  version: 2
+  build_test:
+    jobs:
+- build
