@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 public class MandelbrotSetViewer extends JFrame {
 
 	private JPanel contentPane;
-	private MandelbrotSetModel writer;
+	private MandelbrotSetModel model;
 
 	/**
 	 * Launch the application.
@@ -32,44 +32,46 @@ public class MandelbrotSetViewer extends JFrame {
 	 * Create the frame.
 	 */
 	public MandelbrotSetViewer() {
-		writer = new MandelbrotSetModel();
-		writer.calc();
-		viewProcess();
+		model = new MandelbrotSetModel();
+		// 各点において、発散するか否かを判定する
+		model.calc();
+		// 描画する
+		paint();
 	}
 
-	private void viewProcess(){
+	private void paint() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 600);
-		contentPane = new JPanel(){
-			public void paintComponent(Graphics g){
-				Graphics2D g2 = (Graphics2D)g;
-				//the size of 1 cell on panel
-				double dx = contentPane.getWidth()/(double)MandelbrotSetModel.ARRAY_WIDTH;
-				double dy = contentPane.getHeight()/(double)MandelbrotSetModel.ARRAY_HEIGHT;
+		contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				// the size of 1 cell on panel
+				double dx = contentPane.getWidth() / (double) MandelbrotSetModel.ARRAY_WIDTH;
+				double dy = contentPane.getHeight() / (double) MandelbrotSetModel.ARRAY_HEIGHT;
 
-				for( int yArrayIndex = 0 ; yArrayIndex < MandelbrotSetModel.ARRAY_HEIGHT ; yArrayIndex++){
-					double coordinateY =  dy * yArrayIndex;
-					for( int xArrayIndex = 0 ; xArrayIndex < MandelbrotSetModel.ARRAY_WIDTH  ; xArrayIndex ++ ){
+				for (int yArrayIndex = 0; yArrayIndex < MandelbrotSetModel.ARRAY_HEIGHT; yArrayIndex++) {
+					double coordinateY = dy * yArrayIndex;
+					for (int xArrayIndex = 0; xArrayIndex < MandelbrotSetModel.ARRAY_WIDTH; xArrayIndex++) {
 						double coordinateX = dx * xArrayIndex;
-						CellData cell = writer.getArray()[yArrayIndex][xArrayIndex];
-						
-						//decide the color of each cell
-						if(cell.flag){
-							g2.setPaint(Color.BLUE); 
-						}else{
-							if(cell.calcNum %3 == 0){
+						Cell cell = model.getArray()[yArrayIndex][xArrayIndex];
+
+						// decide the color of each cell
+						if (cell.isConvergent) {
+							g2.setPaint(Color.BLUE);
+						} else {
+							if (cell.calcCount % 3 == 0) {
 								g2.setPaint(Color.YELLOW);
-							}else if(cell.calcNum %2 == 0){
+							} else if (cell.calcCount % 2 == 0) {
 								g2.setPaint(Color.RED);
-							}else{
+							} else {
 								g2.setPaint(Color.GREEN);
 							}
 						}
 
-						//draw the cell
-					    Rectangle2D rect = new Rectangle2D.Double(coordinateX,coordinateY, dx, dy);
-					    rect.setFrame(rect);
-					    g2.fill(rect);
+						// draw the cell
+						Rectangle2D rect = new Rectangle2D.Double(coordinateX, coordinateY, dx, dy);
+						rect.setFrame(rect);
+						g2.fill(rect);
 					}
 				}
 			}
